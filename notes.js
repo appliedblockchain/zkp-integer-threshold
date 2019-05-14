@@ -1,5 +1,3 @@
-const sha256 = require('sha256')
-
 
 // Paper: https://cs.nyu.edu/~mwalfish/papers/vex-sigcomm13.pdf
 
@@ -111,46 +109,3 @@ const sha256 = require('sha256')
 
 // A trusted central document authority that provides proof services.
 // P has requested a secret S from this authority, for use in proving her age. The authority assigns a secret (256 bit) S to P. Let’s say P's (S) is:
-
-
-const encryptAge = (age, seed) => {
-  let h = seed
-  for(let i=1; i<=(age+1); i++) {
-    h = sha256(h)
-  }
-  return h
-}
-
-const proveAge = (age, ageToProove, seed) => {
-  const p = (1 + age - ageToProove)
-  let h = seed
-  for(let i=1; i<=p; i++) {
-    h = sha256(h)
-  }
-  return h
-}
-
-const verifyAge = (proof, ageToProove) =>{
-  let h = proof
-  for(let i=1; i<=ageToProove; i++) {
-    h = sha256(h)
-  }
-  return h
-}
-
-const checkAge = (encryptedAge, ageToProove, proof) =>{
-  const verifiedAge = verifyAge(proof, ageToProove)
-  return encryptedAge === verifiedAge
-}
-
-const requiredAge = 18
-const age = 21
-
-const encryptedAge = encryptAge(age, seed)
-
-// ran by
-const proof  = proveAge(age, requiredAge, seed)
-
-// ran by Service
-const result = checkAge(encryptedAge, requiredAge, proof)
-console.log(result)

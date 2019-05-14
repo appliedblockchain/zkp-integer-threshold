@@ -1,7 +1,10 @@
 {
   "name": "zkp-hash-range-js",
-  "version": "v0.3",
+  "version": "v0.3.0",
   "dependencies": {
-    "sha256": "^0.2.0",
+    "sha256": "^0.2.0"
+  },
+  "scripts": {
+    "start": "node zkp-hash-range-example.js"
   }
 }

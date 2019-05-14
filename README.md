@@ -2,6 +2,21 @@
 WIP - ZKP Hash Range for Range Verification ZKPs using hashes
 
 
+### Install
+
+    npm i
+
+<!-- or simply: `npm i -g sha256` - the only dependency required for the core -->
+
+
+### Run
+
+    npm start
+
+or:
+
+    node zkp-hash-range-example.js
+
 Paper: https://cs.nyu.edu/~mwalfish/papers/vex-sigcomm13.pdf
 
 #### Underliying principle:
@@ -85,6 +100,8 @@ KYC Provider sends Client a "Proving Kit"
 
 #### Challenge
 
+This is the main "Demo" flow.
+
 User, who is 21, receives Service Provider request to prove she is at least 18 years of age (The AgeToProve)
 
 mobile-app.js (User)
@@ -106,27 +123,38 @@ ZKP.generateProofProveAge()
 
 #### Implementation
 
+This is the core implementation of the proofs
 
 ```js
-ZKP = {}
-ZKP.encryptAge = () => {
-  encryptAge()
+const { sha256 } = require('crypto')
+
+const encryptAge = (age, seed) => {
+  let h = seed
+  for(let i=1; i<=(age+1); i++) {
+    h = sha256(h)
+  }
+  return h
 }
-ZKP.createProof = () => {
-  proveAge()
+
+const proveAge = (age, ageToProove, seed) => {
+  const p = (1 + age - ageToProove)
+  let h = seed
+  for(let i=1; i<=p; i++) {
+    h = sha256(h)
+  }
+  return h
 }
-ZKP.generateProofProveAge = () => {
 
+const verifyAge = (proof, ageToProove) => {
+  let h = proof
+  for(let i=1; i<=ageToProove; i++) {
+    h = sha256(h)
+  }
+  return h
 }
 
-export default EKP
-```
-
-```js
-KYC = {}
-
-// this function is called from the
-KYC.requestSecret = () => {
-
-}
-```
+module.exports = {
+  encryptAge,
+  proveAge,
+  verifyAge,
+}```
