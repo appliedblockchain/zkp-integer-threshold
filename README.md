@@ -4,7 +4,7 @@ WIP - ZKP Hash Range for Range Verification ZKPs using hashes
 
 Paper: https://cs.nyu.edu/~mwalfish/papers/vex-sigcomm13.pdf
 
-Underliying principle:
+#### Underliying principle:
 
 an entity encodes a value V in the length of a hash chain and commits to the
 value by exposing the tail of the hash chain; later, given a query Q,
@@ -14,7 +14,7 @@ an appropriate node in the hash chain
 This example: https://stratumn.com/uploads/zkp-hash-chains-2.png
 https://stratumn.com/thinking/zero-knowledge-proof-of-age-using-hash-chains/
 
-Parties:
+#### Parties:
 
 KYC - Trusted Authority - Government or KYC Provider
 
@@ -24,7 +24,7 @@ Service - Milena - Verifier - Service Provider (Bike service provider / Gambling
 
 ---
 
-Happy Path:
+#### Happy Path:
 
 The Service sends the User a challenge: “Prove you are at least 18”
 
@@ -34,7 +34,8 @@ The Service verifies the response is correct: “Ok, I am convinced”
 
 ----
 
-Setup:
+#### Setup:
+
 User is registered with KYC provider (provider has ID details of User)
 
 mobile-app.js (User)
@@ -82,7 +83,7 @@ KYC Provider sends Client a "Proving Kit"
 }
 ```
 
-Challenge
+#### Challenge
 
 User, who is 21, receives Service Provider request to prove she is at least 18 years of age (The AgeToProve)
 
@@ -102,6 +103,8 @@ KYC.requestSecret()
 
 ZKP.generateProofProveAge()
 ```
+
+#### Implementation
 
 
 ```js
