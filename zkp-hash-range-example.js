@@ -34,7 +34,7 @@ const main = async () => {
   await promptNext('Welcome in my motorbike shop, you are buying a motorbike for 2k...', inquirer)
   await wait(500)
 
-  console.log("Prove that you\'re over 18 to complete the purchase.\n")
+  console.log("You'll have to prove that you\'re over 18 to complete the purchase.\n")
   await wait(500)
 
   await promptNext('> Select Bike: "GS500 600cc"', inquirer)
