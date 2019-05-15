@@ -28,7 +28,7 @@ const main = async () => {
   })
 
   if (!age.age) throw new NullFieldError("Age")
-  console.log("User: ", age)
+  console.log("User: ", age, "\n")
   age = new Number(age.age)
 
   await promptNext('Welcome in my motorbike shop, you bought a motorbike for 2k, prove that you\'re over 18 to buy a bike.', inquirer)
@@ -39,8 +39,8 @@ const main = async () => {
 
   await promptNext('> Button: [Auth with Nuggets]', inquirer)
 
-  console.log("I open the Nuggets App")
-  await wait(300)
+  console.log("I open the Nuggets App...\n")
+  await wait(500)
 
   // I open my phone and visit http://localhost:3000 / https://abdevs.eu.ngrok.io / https://mkvd.eu.ngrok.io
 
@@ -51,52 +51,56 @@ const main = async () => {
   await promptNext('> Button: [Generate and Send Proof]', inquirer)
 
   console.log("...")
-  await wait(300)
+  await wait(500)
 
-  console.log("Contacting KYC server for secret\n")
-  await wait(300)
+  console.log("Contacting KYC server for secret...\n")
+  await wait(800)
 
 
   // ran by Service:
 
   console.log("Secret Received\n")
-  await wait(300)
+  await wait(500)
 
   const seed = genSeed()
-  console.log(`Seed (secret): ${seed.toString('hex')}\n`)
+  console.log(`Seed (secret): ${formatHex(seed)}\n`)
+  await wait(500)
 
   console.log("Encrypting age...")
-  await wait(300)
+  await wait(500)
 
   const encryptedAge = encryptAge(age, seed)
 
   console.log(`Age Encrypted: ${formatHex(encryptedAge)}\n`)
+  await wait(500)
 
   console.log("Encrypted age Sent alongside Digital Signature and timestamp from provider\n")
-  await wait(300)
+  await wait(500)
 
 
   // ran by User:
 
   console.log("Generating proof...")
-  await wait(300)
+  await wait(500)
 
   const requiredAge = 18 // age treshold
 
   const proof = proveAge(age, requiredAge, seed)
 
-  console.log(`Proof: ${formatHex(proof)}\n`)
+  console.log(`Proof: ${formatHex(proof)}`)
+  await wait(500)
 
-  console.log("Proof generated and sent\n")
-  await wait(300)
+  console.log("Proof generated and sent!\n")
+  await wait(500)
 
 
   // ran by Service:
 
   const verification = verifyAge(proof, requiredAge)
 
-  console.log(`Age verification result: ${formatHex(verification)} \n\n`)
+  console.log(`Age verification challenge result: ${formatHex(verification)} \n\n`)
 
+  console.log("VERIFICATION:")
   if (encryptedAge.equals(verification)) {
     console.log("You have proven your age, you can continue with the purchase.\n")
   } else {
