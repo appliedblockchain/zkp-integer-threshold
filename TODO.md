@@ -2,7 +2,7 @@
 
 - add digital signature by KYC provider
 
-- add digital signature verification of KYC provider by Service
+- add digital signature verification of KYC provider by Service (ideally saved on blockchain)
 
 - add network
 
