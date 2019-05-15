@@ -136,8 +136,8 @@ const encryptAge = (age, seed) => {
   return h
 }
 
-const proveAge = (age, ageToProove, seed) => {
-  const p = (1 + age - ageToProove)
+const proveAge = (age, ageToProve, seed) => {
+  const p = (1 + age - ageToProve)
   let h = seed
   for(let i=1; i<=p; i++) {
     h = sha256(h)
@@ -145,9 +145,9 @@ const proveAge = (age, ageToProove, seed) => {
   return h
 }
 
-const verifyAge = (proof, ageToProove) => {
+const verifyAge = (proof, ageToProve) => {
   let h = proof
-  for(let i=1; i<=ageToProove; i++) {
+  for(let i=1; i<=ageToProve; i++) {
     h = sha256(h)
   }
   return h
