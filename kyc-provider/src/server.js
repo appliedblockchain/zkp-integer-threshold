@@ -2,9 +2,12 @@ const koa = require('koa')
 const koaRouter = require('koa-joi-router')
 const package = require('../package.json')
 const errorHandler = require('./middleware/error-handler')
+const config = require('config')
 const Joi = koaRouter.Joi
 
 const router = koaRouter()
+
+const appSignature = require('./utils/signature')
 
 const users = {
   paula: {
@@ -14,15 +17,14 @@ const users = {
   }
 }
 
-// const appSignature = mantle.sign('I am a KYC provider')
-
 const routes = [
   {
     method: 'get',
     path: '/',
     handler: async ctx => {
       ctx.body = {
-        version: package.version
+        version: package.version,
+        publicKey: config.publicKey
       }      
     }
   },
@@ -52,6 +54,22 @@ const routes = [
       //   data: hashedData
       // }
       ctx.body = 'success'
+    }
+  },
+  {
+    method: 'get',
+    path: '/verify',
+    validate: {
+      query: {
+        signature: Joi.string().required()
+      }
+    },
+    handler: async ctx => {
+      const { signature } = ctx.request.query
+
+      const isValidSignature = signature === appSignature
+
+      ctx.body = isValidSignature
     }
   }
 ]
