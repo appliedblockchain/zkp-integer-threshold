@@ -1,17 +1,16 @@
 {
-  "name": "kyc-provider",
+  "name": "bike-shop",
   "version": "0.1.0",
   "scripts": {
     "start": "nodemon src/server"
   },
   "license": "ISC",
   "dependencies": {
-    "config": "^3.1.0",
+    "axios": "^0.18.0",
     "koa": "^2.7.0",
     "koa-joi-router": "^6.0.0"
   },
   "devDependencies": {
-    "@appliedblockchain/mantle": "^1.14.0",
     "nodemon": "^1.19.0"
   }
 }

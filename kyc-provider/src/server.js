@@ -2,12 +2,12 @@ const koa = require('koa')
 const koaRouter = require('koa-joi-router')
 const package = require('../package.json')
 const errorHandler = require('./middleware/error-handler')
+const Mantle = require('@appliedblockchain/mantle')
+const mantle = require('./utils/mantle')
 const config = require('config')
 const Joi = koaRouter.Joi
 
 const router = koaRouter()
-
-const appSignature = require('./utils/signature')
 
 const users = {
   paula: {
@@ -61,15 +61,18 @@ const routes = [
     path: '/verify',
     validate: {
       query: {
+        msg: Joi.string().required(),
         signature: Joi.string().required()
       }
     },
     handler: async ctx => {
-      const { signature } = ctx.request.query
+      const { msg, signature } = ctx.request.query
 
-      const isValidSignature = signature === appSignature
+      const hash = Mantle.generateHash(msg)
+      const signedMsg = Mantle.sign(hash, mantle.privateKey)
+      const validSignature = signature === signedMsg
 
-      ctx.body = isValidSignature
+      ctx.body = validSignature
     }
   }
 ]
