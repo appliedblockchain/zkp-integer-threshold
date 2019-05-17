@@ -2,7 +2,6 @@ const koa = require('koa')
 const koaRouter = require('koa-joi-router')
 const packageJson = require('../package.json')
 const errorHandler = require('./middleware/error-handler')
-const config = require('config')
 const Joi = koaRouter.Joi
 const zkp = require('zkp')
 const crypto = require('crypto')
@@ -23,8 +22,7 @@ const routes = [
     path: '/',
     handler: async ctx => {
       ctx.body = {
-        version: packageJson.version,
-        publicKey: config.publicKey
+        version: packageJson.version
       }
     }
   },
