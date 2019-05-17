@@ -1,5 +1,5 @@
-# zkp-hash-range-js
-WIP - ZKP Hash Range for Range Verification ZKPs using hashes
+# zkp-integer-threshold
+WIP - Age Verification using ZKP Integer Threshold via Recursive Hashing
 
 
 ### Install
