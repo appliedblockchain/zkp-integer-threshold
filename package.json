@@ -7,5 +7,9 @@
   },
   "scripts": {
     "start": "node zkp-hash-range-example.js"
+  },
+  "devDependencies": {
+    "@appliedblockchain/eslint-config": "^2.6.0",
+    "eslint": "^5.16.0"
   }
 }

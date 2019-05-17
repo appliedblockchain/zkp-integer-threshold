@@ -1,3 +1,34 @@
+const { createHash, randomBytes } = require('crypto')
+const secret = randomBytes(32)
+
+const hash = (data) => (
+  createHash('sha256').update(data).digest()
+)
+
+const hashTimes = (times, data) => (
+  Array(times).fill(0).reduce((acc) => (
+    hash(acc)
+  ), data)
+)
+
+const toHex = (value) => (
+  Buffer.from(value).toString("hex")
+)
+
+const encryptInteger = (secretInteger, secret) => (
+  hashTimes(secretInteger + 1, secret)
+)
+
+const genIntegerProof = (secretInteger, threshold, seed) => {
+  const difference = secretInteger - threshold
+  const proofTimes = difference > 0 ? difference : 0
+  return hashTimes(proofTimes, secret)
+}
+
+const verifyIntegerProof = (proof, threshold) => (
+  hashTimes(threshold + 1, proof)
+)
+
 /**
  * Trusted authority creates a prover kit to send back to prover
  *
@@ -31,5 +62,7 @@ const verifyProof = (provingKit, proverProf, ageToProve) => {}
 module.exports = {
   generateProvingKit,
   generateProof,
-  verifyProof
+  verifyProof,
+  encryptInteger,
+  toHex
 }

@@ -1,1 +1,9 @@
-{}
+{
+  "name": "zkp",
+  "version": "0.1.0",
+  "main": "index.js",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.18.0"
+  }
+}
