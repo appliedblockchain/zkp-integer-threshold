@@ -40,7 +40,7 @@ const routes = [
       }
 
       const verificationProof = zkp.toHex(zkp.verifyIntegerProof(proof, requiredAge))
-      console.log('VERIFIED', verificationProof)
+      console.log('VERIFICATION PROOF', verificationProof)
       console.log('ENCRYPTED AGE', encryptedAge)
       console.log('PROOF', proof)
 

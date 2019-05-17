@@ -1,5 +1,4 @@
-const { createHash, randomBytes } = require('crypto')
-const secret = randomBytes(32)
+const { createHash } = require('crypto')
 
 const hash = (data) => (
   createHash('sha256').update(data).digest()
@@ -19,7 +18,7 @@ const encryptInteger = (secretInteger, secret) => (
   hashTimes(secretInteger + 1, secret)
 )
 
-const genIntegerProof = (secretInteger, threshold, seed) => {
+const genIntegerProof = (secretInteger, threshold, secret) => {
   const difference = secretInteger - threshold
   const proofTimes = difference > 0 ? difference : 0
   return hashTimes(proofTimes, secret)
