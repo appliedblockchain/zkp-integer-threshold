@@ -64,5 +64,7 @@ module.exports = {
   generateProof,
   verifyProof,
   encryptInteger,
-  toHex
+  toHex,
+  genIntegerProof,
+  verifyIntegerProof
 }

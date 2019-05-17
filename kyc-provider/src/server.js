@@ -1,6 +1,6 @@
 const koa = require('koa')
 const koaRouter = require('koa-joi-router')
-const packageJson = require('../package.json')
+const { version } = require('../package.json')
 const errorHandler = require('./middleware/error-handler')
 const Joi = koaRouter.Joi
 const zkp = require('zkp')
@@ -21,9 +21,7 @@ const routes = [
     method: 'get',
     path: '/',
     handler: async ctx => {
-      ctx.body = {
-        version: packageJson.version
-      }
+      ctx.body = { version }
     }
   },
   {
@@ -36,10 +34,13 @@ const routes = [
           publicKey: user.publicKey
         },
         encryptedAge: zkp.toHex(zkp.encryptInteger(user.age, user.seed)),
-        signature: sign(user.name, apiKeys.privateKey)
+        signature: sign(user.name, apiKeys.privateKey) // TODO: Sign message should check the encrypted age
       }
 
-      ctx.body = provingKit
+      // NOTE: Just testing this on api; client will generate this
+      const proof = zkp.toHex(zkp.genIntegerProof(user.age, 18, user.seed))
+
+      ctx.body = { ...provingKit, proof }
     }
   },
   {
@@ -56,7 +57,7 @@ const routes = [
 
       const verified = verify(msg, signature, apiKeys.publicKey)
 
-      ctx.body = verified
+      ctx.body = !!(verified)
     }
   }
 ]
