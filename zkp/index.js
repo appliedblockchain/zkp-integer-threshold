@@ -1,7 +1,7 @@
 const { createHash } = require('crypto')
 
 const hash = (data) => (
-  createHash('sha256').update(data).digest()
+  createHash('sha256').update(data).digest('hex')
 )
 
 const hashTimes = (times, data) => (
