@@ -1,6 +1,10 @@
 const hash = require('../hash')
 const sha256 = hash
 
+const toHex = (value) => (
+  Buffer.from(value).toString("hex")
+)
+
 const encryptInteger = (integer, seed) => (
   let h = seed
   for(let i=1; i<=(integer+1); i++) {
