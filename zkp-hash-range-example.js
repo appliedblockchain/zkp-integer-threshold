@@ -1,6 +1,5 @@
 'use strict'
 
-
 const {
   encryptAge,
   proveAge,
@@ -100,12 +99,14 @@ const main = async () => {
 
   // ran by Service:
 
-  const verification = verifyAge(proof, requiredAge)
+  const verifiedAge = verifyAge(proof, requiredAge)
+
+  const verification = encryptedAge.equals(verifiedAge)
 
   console.log(`Age verification challenge result: ${formatHex(verification)} \n\n`)
 
   console.log("VERIFICATION:")
-  if (encryptedAge.equals(verification)) {
+  if (verification) {
     console.log("You have proven your age, you can continue with the purchase.\n")
   } else {
     console.log("You cannot complete the purchase, age verification failed.\n")
