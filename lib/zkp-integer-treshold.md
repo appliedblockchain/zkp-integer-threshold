@@ -26,13 +26,13 @@ const secret = randomBytes(32)
 const hash = () => {} // ...require('crypto') - sha256 ...
 
 // secretNumber  = 4 // or secretAge
-// treshold = 2
+// threshold = 2
 
 const encryptedAge = hash(hash(hash(hash(secret)))) // secretNumber + 1 times hash()
 
 const proof = hash(secret) // hash once
 
-const verifiedAge = hash(hash(hash(proof))) // 4 - 2 + 1 // treshold - secretNumber + 1
+const verifiedAge = hash(hash(hash(proof))) // 4 - 2 + 1 // threshold - secretNumber + 1
 
 const ageCheck = -> { encryptedAge === verifiedAge }
 
@@ -47,7 +47,7 @@ const encryptedAge = hash(4)("foo"))))  // or hash4(secret) where hash4 = hash(4
 
 const proof = hash("foo")
 
-const verifiedAge = hash(3)(proof) // 3 = 4 - 2 + 1 // verifiedAge = secretNumber - treshold + 1
+const verifiedAge = hash(3)(proof) // 3 = 4 - 2 + 1 // verifiedAge = secretNumber - threshold + 1
 
 const ageCheck = -> { 4 === 4 }
 
@@ -61,7 +61,7 @@ ageCheck()
 /// DROP From here
 
 number   = 2
-treshold = 4
+threshold = 4
 
 // 3 hashes on top of the secret
 
@@ -116,7 +116,7 @@ module.exports = {
 
 
 // number   = 2
-// treshold = 4
+// threshold = 4
 //
 // // 3 hashes on top of the secret
 //

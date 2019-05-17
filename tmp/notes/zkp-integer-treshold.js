@@ -13,8 +13,8 @@ const encryptInteger = (integer, seed) => (
   return h
 )
 
-const proveInteger = (integer, treshold, seed) => (
-  const difference = integer - treshold
+const proveInteger = (integer, threshold, seed) => (
+  const difference = integer - threshold
   let h = seed
   for(let i=1; i <= (difference+1); i++) {
     h = sha256(h)
@@ -22,9 +22,9 @@ const proveInteger = (integer, treshold, seed) => (
   return h
 )
 
-const verifyInteger = (proof, treshold) => (
+const verifyInteger = (proof, threshold) => (
   let h = proof
-  for(let i=1; i<=treshold; i++) {
+  for(let i=1; i<=threshold; i++) {
     h = sha256(h)
   }
   return h

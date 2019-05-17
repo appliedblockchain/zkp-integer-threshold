@@ -5,7 +5,7 @@ const requiredAge = 18
 
 // positive outcome
 //
-//    in this case the number exceeds the treshold
+//    in this case the number exceeds the threshold
 //
 positiveOutcome = () => {
   age = 21

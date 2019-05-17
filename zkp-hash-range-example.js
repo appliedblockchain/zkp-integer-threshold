@@ -86,7 +86,7 @@ const main = async () => {
   console.log("Generating proof...")
   await wait(500)
 
-  const requiredAge = 18 // age treshold
+  const requiredAge = 18 // age threshold
 
   const proof = proveAge(age, requiredAge, seed)
 

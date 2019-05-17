@@ -12,15 +12,15 @@ const toHex = (value) => (
 )
 
 // secretInteger (secretAge   = 4)
-// treshold      (ageTreshold = 2)
+// threshold      (agethreshold = 2)
 
 const encryptedInteger = hash(hash(hash(hash(hash("foo"))))) // integer + 1 times hash()
 console.log("encryptedInteger:", toHex(encryptedInteger))
 
-const integerProof = hash(hash(hash("foo"))) // integer - treshold + 1, in this example: 4 - 2 + 1 times hash()
+const integerProof = hash(hash(hash("foo"))) // integer - threshold + 1, in this example: 4 - 2 + 1 times hash()
 console.log("integerProof:", toHex(integerProof))
 
-const verifiedAge = hash(hash(integerProof)) // treshold - 1 times hash()
+const verifiedAge = hash(hash(integerProof)) // threshold - 1 times hash()
 console.log("verifiedAge:", toHex(verifiedAge))
 
 const ageCheck = () => ( encryptedInteger.equals(verifiedAge) )
