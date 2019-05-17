@@ -103,7 +103,7 @@ const main = async () => {
 
   const verification = encryptedAge.equals(verifiedAge)
 
-  console.log(`Age verification challenge result: ${formatHex(verification)} \n\n`)
+  console.log(`Age verification challenge result: ${formatHex(verifiedAge)} \n\n`)
 
   console.log("VERIFICATION:")
   if (verification) {
