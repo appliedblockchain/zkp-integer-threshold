@@ -1,5 +1,7 @@
 -  TODO: rename
 
+- Add ESLINT!
+
 - add more tests
 
 - add digital signature by KYC provider

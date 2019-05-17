@@ -40,9 +40,9 @@ const main = async () => {
 
   await promptNext('> Button: [Buy]', inquirer)
 
-  await promptNext('> Button: [Auth with Nuggets]', inquirer)
+  await promptNext('> Button: [Auth with Provider]', inquirer)
 
-  console.log("I open the Nuggets App...\n")
+  console.log("I open the Provider App...\n")
   await wait(500)
 
   // I open my phone and visit http://localhost:3000 / https://abdevs.eu.ngrok.io / https://mkvd.eu.ngrok.io
