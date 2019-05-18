@@ -35,8 +35,6 @@ https://stratumn.com/thinking/zero-knowledge-proof-of-age-using-hash-chains/
 This is the core implementation of the proofs
 
 ```js
-const { sha256 } = require('crypto')
-
 const encryptAge = (age, seed) => {
   let h = seed
   for(let i=1; i<=(age+1); i++) {
