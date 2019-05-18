@@ -7,7 +7,7 @@ const zkp = require('zkp')
 const Joi = koaRouter.Joi
 
 const router = koaRouter()
-const url = 'http://localhost:3000'
+const url = 'http://localhost:8000'
 const requiredAge = 18
 
 const routes = [
@@ -41,6 +41,8 @@ const routes = [
 
       const verificationProof = zkp.verifyIntegerProof(proof, requiredAge)
 
+      console.log('*', encryptedAge)
+      console.log('*', verificationProof)
       ctx.body = encryptedAge === verificationProof
     }
   }

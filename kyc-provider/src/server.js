@@ -13,7 +13,7 @@ const router = koaRouter()
 const user = {
   name: 'Paula',
   age: 21,
-  secret: crypto.randomBytes(32)
+  secret: crypto.randomBytes(32).toString('hex')
 }
 
 const routes = [
@@ -31,7 +31,7 @@ const routes = [
       const provingKit = {
         user: {
           name: user.name,
-          publicKey: user.publicKey
+          secret: user.secret
         },
         encryptedAge: zkp.encryptInteger(user.age, user.secret),
         signature: sign(user.name, apiKeys.privateKey) // TODO: Sign message should check the encrypted age
