@@ -1,12 +1,10 @@
 'use strict'
 
-
 const {
   encryptAge,
   proveAge,
   verifyAge,
 } = require('./lib/zkp-range-proofs-age')
-
 
 const { NullFieldError } = require('./lib/errors.js')
 const inquirer = require('inquirer')
