@@ -1,12 +1,15 @@
 # zkp-integer-threshold
-WIP - Age Verification using ZKP Integer Threshold via Recursive Hashing
+
+There are Snarks and other way to build other ZKP consructs. 
+
+This is an example using a ZKP integer treshold hashchain as the one described in the VEX paper: https://cs.nyu.edu/~mwalfish/papers/vex-sigcomm13.pdf even if we're applying in this example repository for purposes like `"age verification"` (prove that a user is over a certain age), or `"credit line(s) value in thousandUSDs"` or other similar ones.
 
 
 ### Install
 
     npm i
 
-<!-- or simply: `npm i -g sha256` - the only dependency required for the core -->
+<!-- even if the core SDK/module shouldn't require any third party deps (only node 10+) -->
 
 
 ### Run
@@ -16,17 +19,21 @@ WIP - Age Verification using ZKP Integer Threshold via Recursive Hashing
 or:
 
     node zkp-hash-range-example.js
-
-Paper: https://cs.nyu.edu/~mwalfish/papers/vex-sigcomm13.pdf
+    
 
 #### Underliying principle:
 
-an entity encodes a value V in the length of a hash chain and commits to the
+TLDR; Age Difference is "hidden" in the proof. ok, now skip to implementation :D
+
+An entity encodes a value V in the length of a hash chain and commits to the
 value by exposing the tail of the hash chain; later, given a query Q,
 the entity can prove that V ≥ Q (without disclosing V), by revealing
 an appropriate node in the hash chain
 
-This example: https://stratumn.com/uploads/zkp-hash-chains-2.png
+Paper: https://cs.nyu.edu/~mwalfish/papers/vex-sigcomm13.pdf
+
+ https://stratumn.com/uploads/zkp-hash-chains-2.png
+
 https://stratumn.com/thinking/zero-knowledge-proof-of-age-using-hash-chains/
 
 
