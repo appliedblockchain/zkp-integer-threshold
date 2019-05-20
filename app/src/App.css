@@ -17,6 +17,7 @@ body, html {
 }
 
 .Header {
+  z-index: 9;
   position: fixed;
   left: 0;
   top: 0;
@@ -57,7 +58,7 @@ body, html {
   display: flex;
   padding: 40px;
   flex-direction: column;
-  background-color: #6d2c32;
+  background-color: #131315;
   box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 2px 1px -1px rgba(0,0,0,0.12);
   word-wrap: break-word;
   margin-top: 40px;
@@ -69,8 +70,7 @@ body, html {
   margin-top: 40px;
 }
 
-.button {
-  padding: 10px;
-  border-radius: 2px;
-  margin-left: 20px;
+.row {
+  display: flex;
+  align-items: center;
 }

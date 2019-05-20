@@ -1,10 +1,33 @@
 import React, { useState } from 'react'
 import ConfettiGenerator from "confetti-js"
+import TextField from '@material-ui/core/TextField'
+import { withStyles } from '@material-ui/core/styles'
+import Button from '@material-ui/core/Button'
 import axios from 'axios'
 import zkp from 'zkp'
 import './App.css'
 
-const App = () => {
+const styles = theme => ({
+  textField: {
+    marginLeft: theme.spacing.unit,
+    marginRight: theme.spacing.unit,
+    width: '100%'
+  },
+  input: {
+    color: '#fff'
+  },
+  inputLabel: {
+    color: '#fff'
+  },
+  notchedOutline: {
+    borderColor: '#f50057 !important'
+  },
+  button: {
+    margin: theme.spacing.unit,
+  }
+})
+
+const App = ({ classes }) => {
   const [ verified, setVerified ] = useState(false)
   const [ provingKit, setProvingKit ] = useState('')
   const [ signature, setSignature ] = useState('')
@@ -91,8 +114,12 @@ const App = () => {
         { purchased ? null : (
           <div className="Main">
           <div className="optionsContainer">
-            <button onClick={requestProvingKit} className="button">REQUEST PROVING KIT</button>
-            <button onClick={purchase} className="button">PURCHASE BIKE</button>
+            <Button onClick={requestProvingKit} variant="contained" color="secondary" className={classes.button}>
+              REQUEST PROVING KIT
+            </Button>
+            <Button onClick={purchase} variant="contained" color="secondary" className={classes.button}>
+              PURCHASE BIKE
+            </Button>
           </div>
 
           { provingKit ? (
@@ -100,12 +127,50 @@ const App = () => {
             <div className="container">
               <div className="containerTitle">PROVING KIT DETAILS</div>
               <div>Proving Kit: {JSON.stringify(provingKit, null, 4)}</div>
-              <div>Signature: <input value={signature} onChange={e => setSignature(e.currentTarget.value)} /></div>
-              <div>Secret: <input value={secret} onChange={e => setSecret(e.currentTarget.value)} /></div>
+              <div className="row">
+                Signature:
+                <TextField
+                  id="signature"
+                  label="Signature"
+                  className={classes.textField}
+                  value={signature}
+                  onChange={e => setSignature(e.currentTarget.value)}
+                  margin="normal"
+                  variant="outlined"
+                  InputProps={{
+                    classes: { notchedOutline: classes.notchedOutline, root: classes.input },
+                    className: classes.input
+                  }}
+                  InputLabelProps={{
+                    className: classes.inputLabel
+                  }}
+                />
+              </div>
+              <div className="row">
+                Secret:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <TextField
+                  id="secret"
+                  label="Secret"
+                  className={classes.textField}
+                  value={secret}
+                  onChange={e => setSecret(e.currentTarget.value)}
+                  margin="normal"
+                  variant="outlined"
+                  InputProps={{
+                    classes: { notchedOutline: classes.notchedOutline },
+                    className: classes.input
+                  }}
+                  InputLabelProps={{
+                    className: classes.inputLabel
+                  }}
+                />
+              </div>
             </div>
 
             <div className="optionsContainer">
-              <button onClick={generateProof} className="button">GENERATE PROOF</button>
+              <Button onClick={generateProof} variant="contained" color="secondary" className={classes.button}>
+                GENERATE PROOF
+              </Button>
             </div>
           </>
         ): null }
@@ -118,8 +183,10 @@ const App = () => {
           </div>
 
           <div className="optionsContainer">
-              <button onClick={verifyProof} className="button">VERIFY PROOF</button>
-            </div>
+            <Button onClick={verifyProof} variant="contained" color="secondary" className={classes.button}>
+              VERIFY PROOF
+            </Button>
+          </div>
         </>
         ): null }
         </div>
@@ -129,4 +196,4 @@ const App = () => {
   )
 }
 
-export default App
+export default withStyles(styles)(App)
