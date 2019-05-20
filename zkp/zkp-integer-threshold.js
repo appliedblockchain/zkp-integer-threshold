@@ -3,8 +3,8 @@ const { sha256Hash, hashTimes } = require('./lib/utils')
 
 const genSecret = () => ( randomBytes(32) )
 
-const encryptIntegerThreshold = (intThreshold, secret) => (
-  hashTimes(intThreshold+1, secret, sha256Hash)
+const encryptInteger = (integer, secret) => (
+  hashTimes(integer+1, secret, sha256Hash)
 )
 
 const genIntegerThresholdProof = (intThreshold, integer, secret) => {
@@ -18,7 +18,7 @@ const verifyIntegerThreshold = (intThreshold, proof) => (
 
 module.exports = {
   genSecret,
-  encryptIntegerThreshold,
+  encryptInteger,
   genIntegerThresholdProof,
   verifyIntegerThreshold,
 }
