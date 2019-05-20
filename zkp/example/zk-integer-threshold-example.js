@@ -5,7 +5,7 @@ const {
   verifyIntegerThreshold,
 } = require('../zkp-integer-threshold')
 
-const int = 9 // >= 7 will pass, < 7 will fail
+const int = 8 // >= 7 will pass, < 7 will fail
 const threshold = 7
 const secret  = randomBytes(32)
 const enc     = encryptInteger(int, secret)

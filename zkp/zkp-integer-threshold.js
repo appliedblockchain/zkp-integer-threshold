@@ -7,13 +7,13 @@ const encryptInteger = (integer, secret) => (
   hashTimes(integer+1, secret, sha256Hash)
 )
 
-const genIntegerThresholdProof = (intThreshold, integer, secret) => {
-  const integerDifference = intThreshold - integer +1
+const genIntegerThresholdProof = (integer, intThreshold, secret) => {
+  const integerDifference = integer - intThreshold
   return hashTimes(integerDifference, secret, sha256Hash)
 }
 
 const verifyIntegerThreshold = (intThreshold, proof) => (
-  hashTimes(intThreshold, proof, sha256Hash)
+  hashTimes(intThreshold+1, proof, sha256Hash)
 )
 
 module.exports = {
