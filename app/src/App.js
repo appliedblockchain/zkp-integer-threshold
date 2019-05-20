@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import ConfettiGenerator from "confetti-js"
 import axios from 'axios'
 import zkp from 'zkp'
 import './App.css'
@@ -7,6 +8,7 @@ const App = () => {
   const [ verified, setVerified ] = useState(false)
   const [ provingKit, setProvingKit ] = useState('')
   const [ proof, setProof ] = useState('')
+  const [ purchased, setPurchased ] = useState(false)
 
   const purchase = () => {
     if (!provingKit) {
@@ -22,6 +24,12 @@ const App = () => {
     }
 
     window.alert('Purchase successful!')
+
+    setPurchased(true)
+
+    const confettiSettings = { target: 'my-canvas' }
+    const confetti = new ConfettiGenerator(confettiSettings)
+    confetti.render()
   }
 
   const requestProvingKit = async () => {
@@ -57,6 +65,7 @@ const App = () => {
       setVerified(true)
       window.alert('Age verified')
     } catch (error) {
+      setVerified(false)
       if (error.response && error.response.data) {
         return window.alert(error.response.data)
       }
@@ -66,46 +75,51 @@ const App = () => {
   }
 
   return (
-    <div className="App">
-      <div className="Header">
-        <div className="title">
-          BIKE SHOP
+    <>
+      <canvas className="Confetti" id="my-canvas"></canvas>
+      <div className="App">
+        <div className="Header">
+          <div className="title">
+            BIKE SHOP
+          </div>
         </div>
-      </div>
-      <div className="Main">
-        <div className="optionsContainer">
-          <button onClick={requestProvingKit} className="button">REQUEST PROVING KIT</button>
-          <button onClick={purchase} className="button">PURCHASE BIKE</button>
-        </div>
+        { purchased ? null : (
+          <div className="Main">
+          <div className="optionsContainer">
+            <button onClick={requestProvingKit} className="button">REQUEST PROVING KIT</button>
+            <button onClick={purchase} className="button">PURCHASE BIKE</button>
+          </div>
 
-        { provingKit ? (
-        <>
+          { provingKit ? (
+          <>
+            <div className="container">
+              <div className="containerTitle">PROVING KIT DETAILS</div>
+              <div>Signed Proving Kit: <input onChange={e => setProvingKit({ ...provingKit, signedProvingKit: e.currentTarget.value })} value={provingKit.signedProvingKit} /></div>
+              <div>Secret: <input onChange={e => setProvingKit({ ...provingKit, secret: e.currentTarget.value })} value={provingKit.secret} /></div>
+            </div>
+
+            <div className="optionsContainer">
+              <button onClick={generateProof} className="button">GENERATE PROOF</button>
+            </div>
+          </>
+        ): null }
+
+        { proof ? (
+          <>
           <div className="container">
-            <div className="containerTitle">PROVING KIT DETAILS</div>
-            <div>Signed Proving Kit: <input onChange={e => setProvingKit({ ...provingKit, signedProvingKit: e.currentTarget.value })} value={provingKit.signedProvingKit} /></div>
-            <div>Secret: <input onChange={e => setProvingKit({ ...provingKit, secret: e.currentTarget.value })} value={provingKit.secret} /></div>
+            <div className="containerTitle">PROOF DETAILS</div>
+            <div>Proof: {proof}</div>
           </div>
 
           <div className="optionsContainer">
-            <button onClick={generateProof} className="button">GENERATE PROOF</button>
-          </div>
+              <button onClick={verifyProof} className="button">VERIFY PROOF</button>
+            </div>
         </>
-      ): null }
-
-      { proof ? (
-        <>
-        <div className="container">
-          <div className="containerTitle">PROOF DETAILS</div>
-          <div>Proof: {proof}</div>
+        ): null }
         </div>
-
-        <div className="optionsContainer">
-            <button onClick={verifyProof} className="button">VERIFY PROOF</button>
-          </div>
-      </>
-      ): null }
+        )}
       </div>
-    </div>
+    </>
   )
 }
 
