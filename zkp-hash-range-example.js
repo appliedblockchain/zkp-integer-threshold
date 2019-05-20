@@ -1,7 +1,7 @@
 'use strict'
 
 const {
-  encryptIntegerThreshold,
+  encryptInteger,
   genIntegerThresholdProof,
   verifyIntegerThreshold,
 } = require('./zkp/zkp-integer-threshold')
@@ -69,7 +69,7 @@ const main = async () => {
   console.log("Encrypting age...")
   await wait(200)
 
-  const encryptedAge = encryptIntegerThreshold(age, seed)
+  const encryptedAge = encryptInteger(age, seed)
 
   console.log(`Age Encrypted: ${formatHex(encryptedAge)}\n`)
   await wait(200)
