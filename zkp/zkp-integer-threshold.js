@@ -12,8 +12,8 @@ const genIntegerThresholdProof = (intThreshold, integer, secret) => {
   return hashTimes(integerDifference, secret, sha256Hash)
 }
 
-const verifyIntegerThreshold = (integer, proof) => (
-  hashTimes(integer, proof, sha256Hash)
+const verifyIntegerThreshold = (intThreshold, proof) => (
+  hashTimes(intThreshold, proof, sha256Hash)
 )
 
 module.exports = {
