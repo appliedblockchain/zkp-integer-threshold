@@ -4,6 +4,7 @@ const koaRouter = require('koa-joi-router')
 const cors = require('@koa/cors')
 const { version } = require('../package.json')
 const errorHandler = require('./middleware/error-handler')
+const { verify } = require('./utils/crypto')
 const zkp = require('zkp')
 const Joi = koaRouter.Joi
 
@@ -24,19 +25,30 @@ const routes = [
     path: '/verify',
     validate: {
       query: {
-        signedProvingKit: Joi.string().required(),
+        signature: Joi.string().required(),
+        provingKit: Joi.string().required(),
         proof: Joi.string().required()
       }
     },
     handler: async ctx => {
-      const { signedProvingKit, proof } = ctx.request.query
+      const { provingKit, signature, proof } = ctx.request.query
 
       try {
-        const { data } = await axios.get(`${url}/verify?signature=${signedProvingKit}`)
+        const { data: publicKey } = await axios.get(`${url}/public-key`)
+
+        const validSignature = verify(provingKit, signature, publicKey)
+
+        if (!validSignature) {
+          ctx.status = 401
+          ctx.body = 'Invalid signature'
+          return
+        }
 
         const verificationProof = zkp.verifyIntegerProof(proof, requiredAge)
 
-        ctx.body = data.encryptedAge === verificationProof
+        const { encryptedAge } = JSON.parse(provingKit)
+
+        ctx.body = encryptedAge === verificationProof
       } catch (error) {
         ctx.status = error.response.status
         ctx.body = error.response.data

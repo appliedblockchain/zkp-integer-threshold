@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import ConfettiGenerator from "confetti-js"
 import axios from 'axios'
 import zkp from 'zkp'
@@ -7,6 +7,8 @@ import './App.css'
 const App = () => {
   const [ verified, setVerified ] = useState(false)
   const [ provingKit, setProvingKit ] = useState('')
+  const [ signature, setSignature ] = useState('')
+  const [ secret, setSecret ] = useState('')
   const [ proof, setProof ] = useState('')
   const [ purchased, setPurchased ] = useState(false)
 
@@ -40,7 +42,10 @@ const App = () => {
     }
 
     const { data } = await axios.get('http://localhost:8000/proving-kit')
-    setProvingKit(data)
+
+    setProvingKit(data.provingKit)
+    setSignature(data.signature)
+    setSecret(data.secret)
   } 
 
   const generateProof = () => {
@@ -50,13 +55,13 @@ const App = () => {
       return window.alert('No age provided: proof calculation aborted')
     }
 
-    const proof = zkp.genIntegerProof(age, 18, provingKit.secret)
+    const proof = zkp.genIntegerProof(age, 18, secret)
     setProof(proof)
   }
 
   const verifyProof = async () => {
     try {
-      const { data } = await axios.get(`http://localhost:8001/verify?signedProvingKit=${provingKit.signedProvingKit}&proof=${proof}`)
+      const { data } = await axios.get(`http://localhost:8001/verify?provingKit=${JSON.stringify(provingKit)}&proof=${proof}&signature=${signature}`)
 
       if (!data) {
         throw new Error('Invalid proof')
@@ -94,8 +99,9 @@ const App = () => {
           <>
             <div className="container">
               <div className="containerTitle">PROVING KIT DETAILS</div>
-              <div>Signed Proving Kit: <input onChange={e => setProvingKit({ ...provingKit, signedProvingKit: e.currentTarget.value })} value={provingKit.signedProvingKit} /></div>
-              <div>Secret: <input onChange={e => setProvingKit({ ...provingKit, secret: e.currentTarget.value })} value={provingKit.secret} /></div>
+              <div>Proving Kit: {JSON.stringify(provingKit, null, 4)}</div>
+              <div>Signature: <input value={signature} onChange={e => setSignature(e.currentTarget.value)} /></div>
+              <div>Secret: <input value={secret} onChange={e => setSecret(e.currentTarget.value)} /></div>
             </div>
 
             <div className="optionsContainer">

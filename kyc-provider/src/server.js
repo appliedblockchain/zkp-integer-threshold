@@ -3,16 +3,16 @@ const koaRouter = require('koa-joi-router')
 const cors = require('@koa/cors')
 const { version } = require('../package.json')
 const errorHandler = require('./middleware/error-handler')
-const Joi = koaRouter.Joi
 const zkp = require('zkp')
 const crypto = require('crypto')
-const { sign, verify } = require('./utils/crypto')
+const { sign } = require('./utils/crypto')
 const apiKeys = require('./utils/apiKeys')
 
 const router = koaRouter()
 
 const user = {
   name: 'ZKP User',
+  id: 1,
   age: 21,
   secret: crypto.randomBytes(32).toString('hex')
 }
@@ -29,36 +29,20 @@ const routes = [
     method: 'get',
     path: '/proving-kit',
     handler: async ctx => {
-      const { name, age, secret } = user
+      const { id, age, secret } = user
 
-      const provingKit = zkp.generateProvingKit(name, secret, age)
+      const provingKit = zkp.generateProvingKit(id, secret, age)
 
-      const signedProvingKit = sign(JSON.stringify(provingKit), apiKeys.privateKey)
+      const signature = sign(JSON.stringify(provingKit), apiKeys.privateKey)
 
-      ctx.body = { signedProvingKit, secret }
+      ctx.body = { provingKit, signature, secret }
     }
   },
   {
     method: 'get',
-    path: '/verify',
-    validate: {
-      query: {
-        signature: Joi.string().required()
-      }
-    },
+    path: '/public-key',
     handler: async ctx => {
-      const { signature } = ctx.request.query
-      const provingKit = zkp.generateProvingKit(user.name, user.secret, user.age)
-
-      const verified = verify(JSON.stringify(provingKit), signature, apiKeys.publicKey)
-
-      if (!verified) {
-        ctx.status = 401
-        ctx.body = 'Invalid signature'
-        return
-      }
-
-      ctx.body = provingKit
+      ctx.body = apiKeys.publicKey
     }
   }
 ]

@@ -42,16 +42,15 @@ const verifyIntegerProof = (proof, threshold) => (
 /**
  * Trusted authority creates a prover kit to send back to prover
  *
- * @param { string } name Name of prover
+ * @param { string } id Id of prover
  * @param { string } age Age of prover
- * @param { string } secretSeed Unique secret seed for prover
- * @param { string } privateKey Private key used to create a digital signature
+ * @param { string } secret Unique secret for prover
  * @return { object } Object with prover name, hash proof and trusted authority digital signature
  */
-const generateProvingKit = (name, secret, age) => {
+const generateProvingKit = (id, secret, age) => {
   const provingKit = {
-    name,
-    secret,
+    id,
+    timestamp: +new Date(),
     encryptedAge: encryptInteger(age, secret)
   }
 

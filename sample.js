@@ -6,32 +6,32 @@ const verifierUrl = 'http://localhost:8001'
 const validCase = async () => {
   console.log('===== VALID CASE =====')
   console.log('Retrieving proving kit from kyc provider...\n')
-  const { data: { signedProvingKit, secret } } = await axios.get(`${kycProviderUrl}/proving-kit`)
+  const { data: { provingKit, signature, secret } } = await axios.get(`${kycProviderUrl}/proving-kit`)
 
-  console.log(`Proving kit details:\n${signedProvingKit}\n`)
+  console.log(`Proving kit details:\n${JSON.stringify(provingKit, null, 4)}\n`)
 
   console.log('Generating proof...\n')
   const proof = zkp.genIntegerProof(21, 18, secret)
   console.log(`Proof generated: ${proof}\n`)
 
   console.log('Verifying proof with store...\n')
-  const { data: verified } = await axios.get(`${verifierUrl}/verify?signedProvingKit=${signedProvingKit}&proof=${proof}`)
+  const { data: verified } = await axios.get(`${verifierUrl}/verify?signature=${signature}&proof=${proof}&provingKit=${JSON.stringify(provingKit)}`)
   console.log(`Valid proof: ${verified}\n`)
 }
 
 const invalidCase = async () => {
   console.log('===== INVALID CASE =====')
   console.log('Retrieving proving kit from kyc provider...\n')
-  const { data: { signedProvingKit, secret } } = await axios.get(`${kycProviderUrl}/proving-kit`)
+  const { data: { provingKit, signature, secret } } = await axios.get(`${kycProviderUrl}/proving-kit`)
 
-  console.log(`Proving kit details:\n${signedProvingKit}\n`)
+  console.log(`Proving kit details:\n${JSON.stringify(provingKit, null, 4)}\n`)
 
   console.log('Generating proof...\n')
-  const proof = zkp.genIntegerProof(19, 18, secret)
+  const proof = zkp.genIntegerProof(17, 18, secret)
   console.log(`Proof generated: ${proof}\n`)
 
   console.log('Verifying proof with store...\n')
-  const { data: verified } = await axios.get(`${verifierUrl}/verify?signedProvingKit=${signedProvingKit}&proof=${proof}`)
+  const { data: verified } = await axios.get(`${verifierUrl}/verify?signature=${signature}&proof=${proof}&provingKit=${JSON.stringify(provingKit)}`)
   console.log(`Valid proof: ${verified}\n`)
 }
 

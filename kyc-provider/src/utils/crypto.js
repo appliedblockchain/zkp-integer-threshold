@@ -29,15 +29,6 @@ function sign(data, privateKey) {
   return signature
 }
 
-function verify(data, signature, publicKey) {
-  const v = crypto.createVerify('SHA256')
-  v.update(data)
-  v.end()
-
-  const verified = v.verify(publicKey, signature, 'hex')
-  return verified
-}
-
 function generateSecret() {
   return crypto.randomBytes(32)
 }
@@ -45,6 +36,5 @@ function generateSecret() {
 module.exports = {
   generateKeyPair,
   sign,
-  verify,
   generateSecret
 }
