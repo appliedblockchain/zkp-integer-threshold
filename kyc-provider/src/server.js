@@ -1,5 +1,6 @@
 const koa = require('koa')
 const koaRouter = require('koa-joi-router')
+const cors = require('@koa/cors')
 const { version } = require('../package.json')
 const errorHandler = require('./middleware/error-handler')
 const Joi = koaRouter.Joi
@@ -11,7 +12,7 @@ const apiKeys = require('./utils/apiKeys')
 const router = koaRouter()
 
 const user = {
-  name: 'Paula',
+  name: 'ZKP User',
   age: 21,
   secret: crypto.randomBytes(32).toString('hex')
 }
@@ -28,16 +29,13 @@ const routes = [
     method: 'get',
     path: '/proving-kit',
     handler: async ctx => {
-      const provingKit = {
-        user: {
-          name: user.name,
-          secret: user.secret
-        },
-        encryptedAge: zkp.encryptInteger(user.age, user.secret),
-        signature: sign(user.name, apiKeys.privateKey) // TODO: Sign message should check the encrypted age
-      }
+      const { name, age, secret } = user
 
-      ctx.body = provingKit
+      const provingKit = zkp.generateProvingKit(name, secret, age)
+
+      const signedProvingKit = sign(JSON.stringify(provingKit), apiKeys.privateKey)
+
+      ctx.body = { signedProvingKit, secret }
     }
   },
   {
@@ -45,16 +43,22 @@ const routes = [
     path: '/verify',
     validate: {
       query: {
-        msg: Joi.string().required(),
         signature: Joi.string().required()
       }
     },
     handler: async ctx => {
-      const { msg, signature } = ctx.request.query
+      const { signature } = ctx.request.query
+      const provingKit = zkp.generateProvingKit(user.name, user.secret, user.age)
 
-      const verified = verify(msg, signature, apiKeys.publicKey)
+      const verified = verify(JSON.stringify(provingKit), signature, apiKeys.publicKey)
 
-      ctx.body = !!(verified)
+      if (!verified) {
+        ctx.status = 401
+        ctx.body = 'Invalid signature'
+        return
+      }
+
+      ctx.body = provingKit
     }
   }
 ]
@@ -63,6 +67,10 @@ router.route(routes)
 
 const app = new koa()
 app
+  .use(cors({
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': [ 'GET', 'POST', 'PATCH', 'PUT', 'OPTIONS' ]
+  }))
   .use(errorHandler)
   .use(router.middleware())
 

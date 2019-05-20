@@ -1,6 +1,7 @@
 const axios = require('axios')
 const koa = require('koa')
 const koaRouter = require('koa-joi-router')
+const cors = require('@koa/cors')
 const { version } = require('../package.json')
 const errorHandler = require('./middleware/error-handler')
 const zkp = require('zkp')
@@ -23,27 +24,23 @@ const routes = [
     path: '/verify',
     validate: {
       query: {
-        msg: Joi.string().required(),
-        signature: Joi.string().required(),
-        proof: Joi.string().required(),
-        encryptedAge: Joi.string().required()
+        signedProvingKit: Joi.string().required(),
+        proof: Joi.string().required()
       }
     },
     handler: async ctx => {
-      const { msg, signature, proof, encryptedAge } = ctx.request.query
-      const { data: validSignature } = await axios.get(`${url}/verify?msg=${msg}&signature=${signature}`)
+      const { signedProvingKit, proof } = ctx.request.query
 
-      if (!validSignature) {
-        ctx.status = 400
-        ctx.body = 'Invalid signature'
-        return
+      try {
+        const { data } = await axios.get(`${url}/verify?signature=${signedProvingKit}`)
+
+        const verificationProof = zkp.verifyIntegerProof(proof, requiredAge)
+
+        ctx.body = data.encryptedAge === verificationProof
+      } catch (error) {
+        ctx.status = error.response.status
+        ctx.body = error.response.data
       }
-
-      const verificationProof = zkp.verifyIntegerProof(proof, requiredAge)
-
-      console.log('*', encryptedAge)
-      console.log('*', verificationProof)
-      ctx.body = encryptedAge === verificationProof
     }
   }
 ]
@@ -52,6 +49,10 @@ router.route(routes)
 
 const app = new koa()
 app
+  .use(cors({
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': [ 'GET', 'POST', 'PATCH', 'PUT', 'OPTIONS' ]
+  }))
   .use(errorHandler)
   .use(router.middleware())
 

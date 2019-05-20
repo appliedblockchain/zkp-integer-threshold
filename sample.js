@@ -6,38 +6,36 @@ const verifierUrl = 'http://localhost:8001'
 const validCase = async () => {
   console.log('===== VALID CASE =====')
   console.log('Retrieving proving kit from kyc provider...\n')
-  const { data } = await axios.get(`${kycProviderUrl}/proving-kit`)
-  const { user, encryptedAge, signature } = data
+  const { data: { signedProvingKit, secret } } = await axios.get(`${kycProviderUrl}/proving-kit`)
 
-  console.log(`Proving kit details:\n${JSON.stringify(data, null, 2)}\n`)
+  console.log(`Proving kit details:\n${signedProvingKit}\n`)
 
   console.log('Generating proof...\n')
-  const proof = zkp.genIntegerProof(21, 18, user.secret)
+  const proof = zkp.genIntegerProof(21, 18, secret)
   console.log(`Proof generated: ${proof}\n`)
 
   console.log('Verifying proof with store...\n')
-  const { data: verified } = await axios.get(`${verifierUrl}/verify?msg=${user.name}&proof=${proof}&signature=${signature}&encryptedAge=${encryptedAge}`)
+  const { data: verified } = await axios.get(`${verifierUrl}/verify?signedProvingKit=${signedProvingKit}&proof=${proof}`)
   console.log(`Valid proof: ${verified}\n`)
 }
 
 const invalidCase = async () => {
   console.log('===== INVALID CASE =====')
   console.log('Retrieving proving kit from kyc provider...\n')
-  const { data } = await axios.get(`${kycProviderUrl}/proving-kit`)
-  const { user, encryptedAge, signature } = data
+  const { data: { signedProvingKit, secret } } = await axios.get(`${kycProviderUrl}/proving-kit`)
 
-  console.log(`Proving kit details:\n${JSON.stringify(data, null, 2)}\n`)
+  console.log(`Proving kit details:\n${signedProvingKit}\n`)
 
   console.log('Generating proof...\n')
-  const proof = zkp.genIntegerProof(19, 18, user.secret)
+  const proof = zkp.genIntegerProof(19, 18, secret)
   console.log(`Proof generated: ${proof}\n`)
 
   console.log('Verifying proof with store...\n')
-  const { data: verified } = await axios.get(`${verifierUrl}/verify?msg=${user.name}&proof=${proof}&signature=${signature}&encryptedAge=${encryptedAge}`)
+  const { data: verified } = await axios.get(`${verifierUrl}/verify?signedProvingKit=${signedProvingKit}&proof=${proof}`)
   console.log(`Valid proof: ${verified}\n`)
 }
 
-;(async () => {
+  ;(async () => {
   await validCase()
   await invalidCase()
 })()
