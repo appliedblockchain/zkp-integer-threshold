@@ -12,4 +12,4 @@ RUN npm i
 
 COPY verifier /home/node/verifier
 
-CMD [ "npm", "start" ]
+CMD [ "npm", "run", "start:dev" ]

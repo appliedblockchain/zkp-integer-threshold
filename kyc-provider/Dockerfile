@@ -12,4 +12,4 @@ RUN npm i
 
 COPY kyc-provider /home/node/kyc-provider
 
-CMD [ "npm", "start" ]
+CMD [ "npm", "run", "start:dev" ]

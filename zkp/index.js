@@ -4,7 +4,7 @@ const { hashTimes } = require('./lib/utils')
 const genSecret = () => (randomBytes(32))
 
 const encryptInteger = (integer, secret) => (
-  hashTimes(integer + 1, secret)
+  hashTimes(integer + 1, secret) // 18
 )
 
 /**
@@ -17,8 +17,7 @@ const encryptInteger = (integer, secret) => (
  */
 const genIntegerProof = (integer, threshold, secret) => {
   const difference = integer - threshold
-  const proofTimes = difference > 0 ? difference : 0
-  return hashTimes(proofTimes, secret)
+  return hashTimes(difference, secret)
 }
 
 /**
