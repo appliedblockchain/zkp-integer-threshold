@@ -36,13 +36,13 @@ const encryptIntegerThreshold = (intThreshold, secret) => (
   hashTimes(intThreshold+1, secret, sha256Hash)
 )
 
-const genIntegerThresholdProof = (intThreshold, secretInt, secret) => {
+const genIntegerProof = (intThreshold, secretInt, secret) => {
   const integerDifference = intThreshold - secretInt + 1
   return hashTimes(integerDifference, secret, sha256Hash)
 }
 
-const verifyIntegerThreshold = (secretInt, proof) => (
-  hashTimes(secretInt, proof, sha256Hash)
+const verifyIntegerProof = (proof, threshold) => (
+  hashTimes(threshold, proof, sha256Hash)
 )
 ```
 

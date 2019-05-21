@@ -1,29 +1,22 @@
-const { createHash } = require('crypto')
+const { randomBytes } = require('crypto')
+const { hashTimes } = require('./lib/utils')
 
-const hash = (data) => (
-  createHash('sha256').update(data).digest('hex')
-)
+const genSecret = () => (randomBytes(32))
 
-const hashTimes = (times, data) => (
-  Array(times).fill(0).reduce((acc) => (
-    hash(acc)
-  ), data)
-)
-
-const encryptInteger = (secretInteger, secret) => (
-  hashTimes(secretInteger + 1, secret)
+const encryptInteger = (integer, secret) => (
+  hashTimes(integer + 1, secret)
 )
 
 /**
  * Prover creates a proof for the verifier
  *
- * @param { number } secretInteger Secret integer
+ * @param { number } integer Secret integer
  * @param { number } threshold The required integer
  * @param { string } secret Unique secret seed for prover
  * @return { string } SHA256 hash
  */
-const genIntegerProof = (secretInteger, threshold, secret) => {
-  const difference = secretInteger - threshold
+const genIntegerProof = (integer, threshold, secret) => {
+  const difference = integer - threshold
   const proofTimes = difference > 0 ? difference : 0
   return hashTimes(proofTimes, secret)
 }
@@ -31,8 +24,8 @@ const genIntegerProof = (secretInteger, threshold, secret) => {
 /**
  * Verifier checks that the proving kit is genuine and prover is over a certain age
  *
- * @param { string } proverProof SHA256 hash from prover
- * @param { number } ageToProve Age to prove required by verifier
+ * @param { string } proof SHA256 hash from prover
+ * @param { number } threshold Age to prove required by verifier
  * @return { boolean }
  */
 const verifyIntegerProof = (proof, threshold) => (
@@ -61,5 +54,6 @@ module.exports = {
   generateProvingKit,
   encryptInteger,
   genIntegerProof,
-  verifyIntegerProof
+  verifyIntegerProof,
+  genSecret
 }
