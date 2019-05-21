@@ -11,6 +11,7 @@
     "axios": "^0.18.0",
     "koa": "^2.7.0",
     "koa-joi-router": "^6.0.0",
+    "web3": "1.0.0-beta.36",
     "zkp": "file:../zkp"
   },
   "devDependencies": {

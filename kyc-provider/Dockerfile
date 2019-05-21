@@ -1,4 +1,4 @@
-FROM node:11.8.0-alpine
+FROM node:11.8.0
 
 RUN mkdir /home/node/kyc-provider
 
