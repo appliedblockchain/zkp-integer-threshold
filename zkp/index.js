@@ -4,7 +4,7 @@ const { hashTimes } = require('./lib/utils')
 const genSecret = () => (randomBytes(32))
 
 const encryptInteger = (integer, secret) => (
-  hashTimes(integer + 1, secret)
+  hashTimes(integer + 1, secret) // 18
 )
 
 /**
@@ -16,9 +16,9 @@ const encryptInteger = (integer, secret) => (
  * @return { string } SHA256 hash
  */
 const genIntegerProof = (integer, threshold, secret) => {
-  const difference = 1 + integer - threshold
+  const difference = integer - threshold
 
-  if (difference <= 0) {
+  if (difference < 0) {
     throw new Error(`Age cannot be less than ${threshold}`)
   }
 
@@ -33,7 +33,7 @@ const genIntegerProof = (integer, threshold, secret) => {
  * @return { boolean }
  */
 const verifyIntegerProof = (proof, threshold) => (
-  hashTimes(threshold, proof)
+  hashTimes(threshold + 1, proof)
 )
 
 /**
