@@ -3,7 +3,13 @@
   "version": "0.1.0",
   "main": "index.js",
   "license": "ISC",
+  "scripts": {
+    "test": "jest"
+  },
   "dependencies": {
     "axios": "^0.18.0"
+  },
+  "devDependencies": {
+    "jest": "^24.8.0"
   }
 }

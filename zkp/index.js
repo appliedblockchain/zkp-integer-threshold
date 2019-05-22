@@ -17,8 +17,12 @@ const encryptInteger = (integer, secret) => (
  */
 const genIntegerProof = (integer, threshold, secret) => {
   const difference = integer - threshold
-  const proofTimes = difference > 0 ? difference : 0
-  return hashTimes(proofTimes, secret)
+
+  if (difference < 0) {
+    throw new Error(`Age cannot be less than ${threshold}`)
+  }
+
+  return hashTimes(difference, secret)
 }
 
 /**
