@@ -16,7 +16,7 @@ const encryptInteger = (integer, secret) => (
  * @return { string } SHA256 hash
  */
 const genIntegerProof = (integer, threshold, secret) => {
-  const difference = integer - threshold
+  const difference = 1 + integer - threshold
   return hashTimes(difference, secret)
 }
 
@@ -28,7 +28,7 @@ const genIntegerProof = (integer, threshold, secret) => {
  * @return { boolean }
  */
 const verifyIntegerProof = (proof, threshold) => (
-  hashTimes(threshold + 1, proof)
+  hashTimes(threshold, proof)
 )
 
 /**
