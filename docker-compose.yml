@@ -7,6 +7,9 @@ services:
       dockerfile: ./kyc-provider/Dockerfile
     ports:
       - 8000:8000
+    volumes:
+      - ./kyc-provider/:/home/node/kyc-provider
+      - /home/node/kyc-provider/node_modules
     environment:
       PORT: 8000
   verifier:
@@ -15,7 +18,18 @@ services:
       dockerfile: ./verifier/Dockerfile
     ports:
       - 8001:8001
+    volumes:
+      - ./verifier/:/home/node/verifier
+      - /home/node/verifier/node_modules
     environment:
       PORT: 8001
+      KYC_PROVIDER_URL: http://kyc-provider:8000
     depends_on:
       - kyc-provider
+  ipfs:
+    image: appliedblockchain/ipfs-solo
+    ports:
+      - 5001:5001
+    depends_on:
+      - kyc-provider
+      - verifier

@@ -9,7 +9,7 @@ const zkp = require('zkp')
 const Joi = koaRouter.Joi
 
 const router = koaRouter()
-const url = 'http://localhost:8000'
+const url = process.env.KYC_PROVIDER_URL || 'http://localhost:8000'
 const requiredAge = 18
 
 const routes = [
@@ -50,6 +50,7 @@ const routes = [
 
         ctx.body = encryptedAge === verificationProof
       } catch (error) {
+        console.log('ERRROR*****', error)
         ctx.status = error.response.status
         ctx.body = error.response.data
       }
@@ -60,6 +61,7 @@ const routes = [
 router.route(routes)
 
 const app = new koa()
+
 app
   .use(cors({
     'Access-Control-Allow-Origin': '*',

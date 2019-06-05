@@ -50,6 +50,7 @@ const routes = [
 router.route(routes)
 
 const app = new koa()
+
 app
   .use(cors({
     'Access-Control-Allow-Origin': '*',

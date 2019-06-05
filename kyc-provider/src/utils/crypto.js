@@ -1,6 +1,6 @@
 const crypto = require('crypto')
 
-async function generateKeyPair() {
+function generateKeyPair() {
   return new Promise((resolve, reject) => {
     crypto.generateKeyPair('ec', {
       namedCurve: 'secp256k1',
