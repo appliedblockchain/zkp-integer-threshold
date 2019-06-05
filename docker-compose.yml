@@ -26,10 +26,3 @@ services:
       KYC_PROVIDER_URL: http://kyc-provider:8000
     depends_on:
       - kyc-provider
-  ipfs:
-    image: appliedblockchain/ipfs-solo
-    ports:
-      - 5001:5001
-    depends_on:
-      - kyc-provider
-      - verifier

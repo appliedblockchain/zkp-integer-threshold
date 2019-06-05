@@ -50,7 +50,6 @@ const routes = [
 
         ctx.body = encryptedAge === verificationProof
       } catch (error) {
-        console.log('ERRROR*****', error)
         ctx.status = error.response.status
         ctx.body = error.response.data
       }
