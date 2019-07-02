@@ -50,16 +50,17 @@ body, html {
   font-weight: bold;
   font-size: 15px;
   display: flex;
-  letter-spacing: .93px;
+  letter-spacing: 1px;
   align-items: center; 
+  margin-bottom: 15px;
 }
 
 .container {
   display: flex;
   padding: 40px;
   flex-direction: column;
-  background-color: #131315;
-  box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 2px 1px -1px rgba(0,0,0,0.12);
+  background-color: #282d31;
+  box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.6), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 2px 1px -1px rgba(0,0,0,0.12);
   word-wrap: break-word;
   margin-top: 40px;
 }
