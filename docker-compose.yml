@@ -1,5 +1,8 @@
 version: '3'
 
+volumes:
+  parity:
+
 services:
   kyc-provider:
     build:
@@ -9,6 +12,13 @@ services:
       - 8000:8000
     environment:
       PORT: 8000
+      PROVIDER: http://parity:8545
+      FROM: '0x1F2e5282481C07BC8B7b07E53Bc3EF6A8012D6b7'
+    volumes:
+      - ./kyc-provider:/home/node/kyc-provider
+      - /home/node/kyc-provider/node_modules
+    depends_on:
+      - parity
   verifier:
     build:
       context: .
@@ -17,5 +27,19 @@ services:
       - 8001:8001
     environment:
       PORT: 8001
+      PROVIDER: http://parity:8545
+      KYC_PROVIDER: http://kyc-provider:8000
+      FROM: '0x1F2e5282481C07BC8B7b07E53Bc3EF6A8012D6b7'
     depends_on:
       - kyc-provider
+      - parity
+    volumes:
+      - ./verifier:/home/node/verifier
+      - /home/node/verifier/node_modules
+  parity:
+    image: appliedblockchain/parity-solo-instant:latest
+    volumes:
+      - parity:/solo/chains
+    ports:
+      - 8545:8545
+      - 8546:8546

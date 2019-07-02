@@ -78,8 +78,12 @@ const App = ({ classes }) => {
       return window.alert('No age provided: proof calculation aborted')
     }
 
-    const proof = zkp.genIntegerProof(age, 18, secret)
-    setProof(proof)
+    try {
+      const proof = zkp.genIntegerProof(Number(age), 18, secret)
+      setProof(proof)
+    } catch (error) {
+      window.alert(error)
+    }
   }
 
   const verifyProof = async () => {

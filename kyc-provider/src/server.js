@@ -7,6 +7,7 @@ const zkp = require('zkp')
 const crypto = require('crypto')
 const { sign } = require('./utils/crypto')
 const apiKeys = require('./utils/apiKeys')
+const { web3, params: web3Params } = require('./utils/web3')
 
 const router = koaRouter()
 
@@ -31,7 +32,15 @@ const routes = [
     handler: async ctx => {
       const { id, age, secret } = user
 
-      const provingKit = zkp.generateProvingKit(id, secret, age)
+      const encryptedAge = zkp.encryptInteger(age, secret)
+
+      const { transactionHash } = await web3.eth.sendTransaction({
+        from: web3Params.from,
+        to: web3Params.from,
+        data: '0x' + encryptedAge
+      })
+
+      const provingKit = zkp.generateProvingKit(id, transactionHash)
 
       const signature = sign(JSON.stringify(provingKit), apiKeys.privateKey)
 

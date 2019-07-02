@@ -1,4 +1,4 @@
-FROM node:11.8.0-alpine
+FROM node:11.8.0
 
 RUN mkdir /home/node/kyc-provider
 
@@ -12,4 +12,4 @@ RUN npm i
 
 COPY kyc-provider /home/node/kyc-provider
 
-CMD [ "npm", "start" ]
+CMD [ "npm", "run", "start:dev" ]

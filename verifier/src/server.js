@@ -5,11 +5,12 @@ const cors = require('@koa/cors')
 const { version } = require('../package.json')
 const errorHandler = require('./middleware/error-handler')
 const { verify } = require('./utils/crypto')
+const { web3 } = require('./utils/web3')
 const zkp = require('zkp')
 const Joi = koaRouter.Joi
 
 const router = koaRouter()
-const url = 'http://localhost:8000'
+const url = process.env.KYC_PROVIDER || 'http://localhost:8000'
 const requiredAge = 18
 
 const routes = [
@@ -46,7 +47,12 @@ const routes = [
 
         const verificationProof = zkp.verifyIntegerProof(proof, requiredAge)
 
-        const { encryptedAge } = JSON.parse(provingKit)
+        const { transactionHash } = JSON.parse(provingKit)
+
+        const transaction = await web3.eth.getTransaction(transactionHash)
+
+        // Remove `0x` prefix
+        const encryptedAge = transaction.input.slice(2)
 
         ctx.body = encryptedAge === verificationProof
       } catch (error) {

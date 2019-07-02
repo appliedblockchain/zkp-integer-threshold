@@ -4,7 +4,7 @@ const { hashTimes } = require('./lib/utils')
 const genSecret = () => (randomBytes(32))
 
 const encryptInteger = (integer, secret) => (
-  hashTimes(integer + 1, secret)
+  hashTimes(integer + 1, secret) // 18
 )
 
 /**
@@ -17,8 +17,12 @@ const encryptInteger = (integer, secret) => (
  */
 const genIntegerProof = (integer, threshold, secret) => {
   const difference = integer - threshold
-  const proofTimes = difference > 0 ? difference : 0
-  return hashTimes(proofTimes, secret)
+
+  if (difference < 0) {
+    throw new Error(`Age cannot be less than ${threshold}`)
+  }
+
+  return hashTimes(difference, secret)
 }
 
 /**
@@ -36,15 +40,14 @@ const verifyIntegerProof = (proof, threshold) => (
  * Trusted authority creates a prover kit to send back to prover
  *
  * @param { string } id Id of prover
- * @param { string } age Age of prover
- * @param { string } secret Unique secret for prover
+ * @param { string } transactionHash Transaction hash for the encrypted age
  * @return { object } Object with prover name, hash proof and trusted authority digital signature
  */
-const generateProvingKit = (id, secret, age) => {
+const generateProvingKit = (id, transactionHash) => {
   const provingKit = {
     id,
     timestamp: +new Date(),
-    encryptedAge: encryptInteger(age, secret)
+    transactionHash
   }
 
   return provingKit
